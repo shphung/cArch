@@ -32,7 +32,7 @@ public class FileHelper {
     }
 
     public static String padLeftZero(String strIn, int len) {
-        for (int i = strIn.length(); i < len; i++){
+        for (int i = strIn.length(); i < len; i++) {
             strIn = "0" + strIn;
         }
         return strIn;

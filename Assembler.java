@@ -20,22 +20,18 @@ public class Assembler {
         cMap.put("R7",7);cMap.put("R8",8);cMap.put("R9",9);cMap.put("R10",10);
         cMap.put("R11",11);cMap.put("R12",12);cMap.put("R13",13);cMap.put("R14",14);
         cMap.put("R15",15);cMap.put("SCREEN",16384);cMap.put("KBD",24576);
-
         compAMap.put("0","101010");compAMap.put("1","111111");compAMap.put("-1","111010");
         compAMap.put("D","001100");compAMap.put("A","110000");compAMap.put("!D","001101");
         compAMap.put("!A","110001");compAMap.put("-D","001111");compAMap.put("-A","110011");
         compAMap.put("D+1","011111");compAMap.put("A+1","110111");compAMap.put("D-1","001110");
         compAMap.put("A-1","110010");compAMap.put("D+A","000010");compAMap.put("D-A","010011");
         compAMap.put("A-D","000111");compAMap.put("D&A","000000");compAMap.put("D|A","010101");
-
         compMMap.put("M","110000");compMMap.put("!M","110001");compMMap.put("-M","110011");
         compMMap.put("M+1","110111");compMMap.put("M-1","110010");compMMap.put("D+M","000010");
         compMMap.put("D-M","010011");compMMap.put("M-D","000111");compMMap.put("D&M","000000");
         compMMap.put("D|M","010101");
-
         dstMap.put("","000");dstMap.put("M","001");dstMap.put("D","010");dstMap.put("MD","011");
         dstMap.put("A","100");dstMap.put("AM","101");dstMap.put("AD","110");dstMap.put("AMD","111");
-
         jmpMap.put("","000");jmpMap.put("JGT","001");jmpMap.put("JEQ","010");jmpMap.put("JGE","011");
         jmpMap.put("JLT","100");jmpMap.put("JNE","101");jmpMap.put("JLE","110");jmpMap.put("JMP","111");
     }
@@ -47,12 +43,11 @@ public class Assembler {
         String line = "";
         int pc = 0;
         Pattern p = Pattern.compile("^\\([^0-9][0-9A-Za-z\\_\\:\\.\\$]+\\)$");
-        Matcher m =null;
+        Matcher m = null;
 
         while(scan.hasNextLine()) {
             line = scan.nextLine();
             m = p.matcher(line);
-            
             if(m.find())
             	labels.put(m.group().substring(1,m.group().length()-1), pc);
             else
@@ -61,25 +56,11 @@ public class Assembler {
         return labels;
     }
 
-
     @SuppressWarnings("resource")
 	public static String asmToHack(String codes) {
         Scanner scan = new Scanner(codes);
-        int addressDec = 0,
-        		lineNumber = 0,
-        		startAddress = 16,
-        		temp = 0,
-        		flag1 = -1,
-        		flag2 = -1;//flag for ";"
-
-        String line = "",
-        		varName = "",
-        		value = "",
-        		a = "",
-        		dst = "",
-        		comp = "",
-        		jmp = "",
-        		instructions = "";
+        int addressDec = 0, lineNumber = 0, startAddress = 16, temp = 0, flag1 = -1, flag2 = -1;
+        String line = "", varName = "", value = "", a = "", dst = "", comp = "", jmp = "", instructions = "";
 
         Pattern p = Pattern.compile("^[^0-9][0-9A-Za-z\\_\\:\\.\\$]+");
         Pattern pL = Pattern.compile("^\\([^0-9][0-9A-Za-z\\_\\:\\.\\$]+\\)$");
