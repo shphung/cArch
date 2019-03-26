@@ -73,28 +73,28 @@ public class Assembler {
             if(line.charAt(0) == '@') {
                 varName = line.substring(1);
                 if(labels.containsKey(varName)) {
-                    value = FileHelper.padLeftZero(Integer.toBinaryString(labels.get(varName)),15);
+                    value = FileFinder.padLeftZero(Integer.toBinaryString(labels.get(varName)),15);
                 } else {
                     if(varName.matches("[0-9]+")) {
-                        value = FileHelper.padLeftZero(Integer.toBinaryString(Integer.parseInt(varName)), 15);
+                        value = FileFinder.padLeftZero(Integer.toBinaryString(Integer.parseInt(varName)), 15);
                     } else {
                         if(cMap.containsKey(varName)) {
-                            value = FileHelper.padLeftZero(Integer.toBinaryString(cMap.get(varName)), 15);
+                            value = FileFinder.padLeftZero(Integer.toBinaryString(cMap.get(varName)), 15);
                         } else {
                             if(p.matcher(varName).find()) {
                                 if(symbols.containsKey(varName)) {
                                     temp = symbols.get(varName);
-                                    value = FileHelper.padLeftZero(Integer.toBinaryString(temp), 15);
+                                    value = FileFinder.padLeftZero(Integer.toBinaryString(temp), 15);
                                 } else {
                                     addressDec = symbols.size() + startAddress;
                                     if(addressDec >= 16384) {
-                                        throw new IllegalStateException("Out of memory!Too many user defined symbols! Line " + lineNumber);
+                                        throw new IllegalStateException("Out of memory. Line " + lineNumber);
                                     }
                                     symbols.put(varName, addressDec);
-                                    value = FileHelper.padLeftZero(Integer.toBinaryString(addressDec), 15);
+                                    value = FileFinder.padLeftZero(Integer.toBinaryString(addressDec), 15);
                                 }
                             } else {
-                                throw new IllegalStateException("Illegal user-defined symbol! Line " + lineNumber);
+                                throw new IllegalStateException("Illegal user-defined symbol. Line " + lineNumber);
                             }
                         }
                     }
@@ -132,7 +132,7 @@ public class Assembler {
                     }
                     instructions += "111" + a + comp + dstMap.get(dst) + jmpMap.get(jmp) + "\n";
                 } else
-                    throw new IllegalStateException("Wrong instruction format!Line " + lineNumber);
+                    throw new IllegalStateException("Instruction format illegal. Line " + lineNumber);
             }
         }
         return instructions;
@@ -141,15 +141,15 @@ public class Assembler {
     @SuppressWarnings("resource")
 	public static void translation(String dir) {
         File fIn = new File(dir);
-        if (!FileHelper.isAsm(fIn))
-            throw new IllegalArgumentException("Wrong file format! Only .asm is accepted!");
+        if (!FileFinder.isAsm(fIn))
+            throw new IllegalArgumentException("Only .asm files");
         try {
             Scanner scan = new Scanner(fIn);
             String preprocessed = "";
             
             while (scan.hasNextLine()) {
                 String line = scan.nextLine();
-                line = FileHelper.noSpaces(FileHelper.noComments(line));
+                line = FileFinder.noSpaces(FileFinder.noComments(line));
                 if (line.length() > 0)
                     preprocessed += line + "\n";
             }
